@@ -2,6 +2,7 @@ package database
 
 import (
 	"fmt"
+	"log"
 
 	"github.com/HugoCBB/api-despesas/internal/models"
 	"gorm.io/driver/mysql"
@@ -20,7 +21,12 @@ func ConnectDataBase() {
 	if err != nil {
 		fmt.Println("Erro ao se conectar com o banco de dados\n", err)
 	}
-	fmt.Println("Conectado ao banco de dados")
-	DB.AutoMigrate(&models.Despesa{}, &models.Usuario{})
 
+	DB.AutoMigrate(&models.Usuario{}, &models.Receita{}, &models.Despesa{})
+
+	if err != nil {
+		log.Fatal("Erro ao migrar o banco de dados:", err)
+	}
+
+	fmt.Println("Conectado ao banco de dados")
 }

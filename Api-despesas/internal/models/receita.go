@@ -4,7 +4,7 @@ import (
 	"time"
 )
 
-type Despesa struct {
+type Receita struct {
 	ID        int       `json:"id"`
 	Valor     float64   `json:"valor"`
 	Data      time.Time `json:"data"`

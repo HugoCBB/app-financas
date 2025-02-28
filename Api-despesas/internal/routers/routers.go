@@ -2,6 +2,7 @@ package routers
 
 import (
 	"github.com/HugoCBB/api-despesas/internal/controllers/despesas"
+	"github.com/HugoCBB/api-despesas/internal/controllers/receitas"
 	"github.com/HugoCBB/api-despesas/internal/controllers/usuario"
 	"github.com/gin-gonic/gin"
 )
@@ -9,17 +10,26 @@ import (
 func HandleRequest() {
 	r := gin.Default()
 
-	v1 := r.Group("/api/usuarios")
+	Usuarios := r.Group("/api/usuarios")
 	{
-		v1.GET("/", usuario.Usuarios)
+		Usuarios.GET("/", usuario.Usuarios)
+		Usuarios.POST("/adicionar", usuario.PostUsuario)
+		Usuarios.DELETE("/deletar/:id", usuario.DeleteUsuario)
 	}
 
-	v2 := r.Group("/api/despesas")
+	Despesa := r.Group("/api/despesa")
 	{
-		v2.GET("/", despesas.Despesas)
-		v2.POST("/adicionar", despesas.AdicionarDespesa)
+		Despesa.GET("/", despesas.Despesas)
+		Despesa.POST("/adicionar", despesas.PostDespesa)
+		Despesa.DELETE("/deletar/:id", despesas.DeleteDespesa)
+	}
+
+	Receita := r.Group("/api/receita")
+	{
+		Receita.GET("/", receitas.Receita)
+		Receita.POST("/adicionar", receitas.PostReceita)
+		Receita.DELETE("/deletar/:id", receitas.DeleteReceita)
 	}
 
 	r.Run()
-
 }
