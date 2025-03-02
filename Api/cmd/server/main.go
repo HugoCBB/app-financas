@@ -3,8 +3,8 @@ package main
 import (
 	"fmt"
 
-	"github.com/HugoCBB/api-despesas/internal/database"
-	"github.com/HugoCBB/api-despesas/internal/routers"
+	"github.com/HugoCBB/api/internal/database"
+	"github.com/HugoCBB/api/internal/routers"
 )
 
 func main() {

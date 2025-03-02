@@ -1,12 +1,14 @@
 package routers
 
 import (
-	"github.com/HugoCBB/api-despesas/internal/controllers"
+	"github.com/HugoCBB/api/internal/controllers"
+	"github.com/HugoCBB/api/internal/middleware"
 	"github.com/gin-gonic/gin"
 )
 
 func HandleRequest() {
 	r := gin.Default()
+	r.Use(middleware.ContentTypeMiddleware(), middleware.CORSMiddleware())
 
 	Usuarios := r.Group("/api/usuarios")
 	{

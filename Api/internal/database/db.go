@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/HugoCBB/api-despesas/internal/models"
+	"github.com/HugoCBB/api/internal/models"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 )

@@ -3,8 +3,8 @@ package controllers
 import (
 	"net/http"
 
-	"github.com/HugoCBB/api-despesas/internal/database"
-	"github.com/HugoCBB/api-despesas/internal/models"
+	"github.com/HugoCBB/api/internal/database"
+	"github.com/HugoCBB/api/internal/models"
 	"github.com/gin-gonic/gin"
 )
 
