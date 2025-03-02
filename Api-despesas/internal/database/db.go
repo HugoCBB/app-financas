@@ -22,7 +22,7 @@ func ConnectDataBase() {
 		fmt.Println("Erro ao se conectar com o banco de dados\n", err)
 	}
 
-	DB.AutoMigrate(&models.Usuario{}, &models.Receita{}, &models.Despesa{})
+	DB.AutoMigrate(&models.Usuario{}, &models.Transacao{})
 
 	if err != nil {
 		log.Fatal("Erro ao migrar o banco de dados:", err)

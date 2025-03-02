@@ -1,4 +1,4 @@
-package usuario
+package controllers
 
 import (
 	"net/http"
