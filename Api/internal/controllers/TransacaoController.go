@@ -9,51 +9,94 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func GetReceita(c *gin.Context) {
+func GetTransacao(c *gin.Context) {
 	var t []models.Transacao
-	database.DB.Where("tipo = ?", models.ReceitaTipo).Find(&t)
+	database.DB.Find(&t)
 	c.JSON(http.StatusOK, t)
 }
 
-func PostReceita(c *gin.Context) {
+func PostTransacao(c *gin.Context) {
 	var t models.Transacao
-	t.Tipo = models.ReceitaTipo
-	t.Data = time.Now()
+	var u models.Usuario
+
+	// Pega o JSON e preenche a struct
 	if err := c.ShouldBindJSON(&t); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
+	// Valida se o usuario_id foi enviado
 	if t.UsuarioID == 0 {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "usuario_id inexistente"})
 		return
 	}
 
-	database.DB.Create(&t)
-	c.JSON(http.StatusOK, t)
-}
-
-func GetDespesa(c *gin.Context) {
-	var t []models.Transacao
-	database.DB.Where("tipo = ?", models.DespesaTipo).Find(&t)
-	c.JSON(http.StatusOK, t)
-}
-
-func PostDespesa(c *gin.Context) {
-	var t models.Transacao
-	t.Tipo = models.DespesaTipo
+	// Busca o usuário no banco antes de atualizar o saldo
+	if err := database.DB.First(&u, t.UsuarioID).Error; err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": "Usuário não encontrado"})
+		return
+	}
 	t.Data = time.Now()
 
-	if err := c.ShouldBindJSON(&t); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+	// Verifica o tipo da transação e atualiza o saldo corretamente
+	switch t.Tipo {
+	case models.ReceitaTipo:
+		database.DB.Create(&t)
+		u.Saldo += t.Valor
+	case models.DespesaTipo:
+		database.DB.Create(&t)
+		u.Saldo -= t.Valor
+	default:
+		c.JSON(http.StatusBadRequest, gin.H{"error": "tipo de transação inválido"})
 		return
 	}
 
-	if t.UsuarioID == 0 {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "usuario_id inexistente"})
-		return
-	}
+	// Salva o usuário atualizado com o novo saldo
+	database.DB.Save(&u)
 
-	database.DB.Create(&t)
+	// Retorna a transação criada
 	c.JSON(http.StatusOK, t)
+}
+
+func DeleteTransacao(c *gin.Context) {
+	var t models.Transacao
+	var u models.Usuario
+
+	id := c.Param("id")
+
+	// Busca a transação antes de deletar
+	if err := database.DB.First(&t, id).Error; err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": "Transação não encontrada"})
+		return
+	}
+
+	// Busca o usuário da transação
+	if err := database.DB.First(&u, t.UsuarioID).Error; err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": "Usuário não encontrado"})
+		return
+	}
+
+	// Atualiza o saldo do usuário antes de deletar a transação
+	switch t.Tipo {
+	case models.ReceitaTipo:
+		u.Saldo -= t.Valor
+	case models.DespesaTipo:
+		u.Saldo += t.Valor
+	}
+
+	// Salva o usuário atualizado
+	database.DB.Save(&u)
+
+}
+
+func GetSaldo(c *gin.Context) {
+	var u models.Usuario
+
+	if err := database.DB.First(&u).Error; err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": "Usuário não encontrado"})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"saldo": u.Saldo})
+
 }

@@ -10,7 +10,9 @@ import (
 
 func Usuarios(c *gin.Context) {
 	var u []models.Usuario
-	database.DB.Find(&u)
+
+	// Busca os usuários com suas transações
+	database.DB.Preload("Transacoes").Find(&u)
 	c.JSON(http.StatusOK, u)
 }
 
@@ -21,6 +23,7 @@ func PostUsuario(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
+
 	database.DB.Create(&u)
 	c.JSON(http.StatusOK, u)
 }

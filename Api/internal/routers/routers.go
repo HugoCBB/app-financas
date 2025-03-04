@@ -17,16 +17,12 @@ func HandleRequest() {
 		Usuarios.DELETE("/deletar/:id", controllers.DeleteUsuario)
 	}
 
-	Receita := r.Group("/api/receita")
+	Transacoes := r.Group("/api/transacoes")
 	{
-		Receita.GET("/", controllers.GetReceita)
-		Receita.POST("/adicionar", controllers.PostReceita)
-	}
-
-	Despesa := r.Group("/api/despesa")
-	{
-		Despesa.GET("/", controllers.GetDespesa)
-		Despesa.POST("/adicionar", controllers.PostDespesa)
+		Transacoes.GET("/", controllers.GetTransacao)
+		Transacoes.POST("/adicionar", controllers.PostTransacao)
+		Transacoes.DELETE("/deletar/:id", controllers.DeleteTransacao)
+		Transacoes.GET("/saldo", controllers.GetSaldo)
 	}
 
 	r.Run()
