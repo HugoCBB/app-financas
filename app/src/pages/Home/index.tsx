@@ -8,23 +8,31 @@ interface despesa{
     valor: number;
 }
 
+interface saldo{
+    saldo: number;
+}
+
 interface HomeProps {
     receita: receita[]
     despesa: despesa[]
+    saldo: saldo
 }
 
-export default function Home({receita, despesa}: HomeProps) {
+export default function Home({receita, despesa,saldo}: HomeProps) {
 
     
     return (
         <View style={styles.container}>
-            <Text style={styles.containerText}>
-                Saldo
-            </Text>
+            <View>
+                <Text style={styles.containerText}>
+                    Saldo
+                </Text>
+                <Text style={styles.containerText}>
+                    R${saldo.saldo.toFixed(2)}
+                </Text>
+            </View>
             
-            <Text style={styles.containerText}>
-                R$00,00
-            </Text>
+            
             
             <View style={styles.containerLabel}>
                 <View >
