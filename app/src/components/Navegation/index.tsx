@@ -1,18 +1,21 @@
-import { TouchableOpacity, StyleSheet, Text, View } from "react-native";
+import { TouchableOpacity, StyleSheet, Text, View, Image } from "react-native";
 
 
 export default function Navegation() {
     return (
         <View style={styles.container}>
             <TouchableOpacity style={styles.button}>
-                <Text>Home</Text>
+                <Image style={styles.iconbutton} source={require('../../assets//icon/botao-home.png')}/>
+                <Text >Home</Text>
             </TouchableOpacity>
             
             <TouchableOpacity style={styles.button}>
+                <Image style={styles.iconbutton} source={require('../../assets//icon/botao-transacao.png')}/>
                 <Text>Transacoes</Text>
             </TouchableOpacity>
             
             <TouchableOpacity style={styles.button}>
+                <Image style={styles.iconbutton} source={require('../../assets//icon/botao-planejamento.png')}/>
                 <Text>Planejamento</Text>
             </TouchableOpacity>
         
@@ -40,6 +43,12 @@ const styles = StyleSheet.create({
     },
     button: {
         padding: 10,
-    
+        alignItems: 'center',
+        
+    },
+    iconbutton: {
+        width: 30,
+        height: 30,
+        
     }
 })
