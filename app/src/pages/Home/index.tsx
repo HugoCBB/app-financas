@@ -1,20 +1,13 @@
 import { StyleSheet, Text, View } from "react-native";
 
 
-interface receita{
-    valor: number;
-}
-interface despesa{
-    valor: number;
-}
-
 interface saldo{
     saldo: number;
 }
 
 interface HomeProps {
-    receita: receita[]
-    despesa: despesa[]
+    receita: number
+    despesa: number
     saldo: saldo
 }
 
@@ -40,23 +33,17 @@ export default function Home({receita, despesa,saldo}: HomeProps) {
                         Receitas
                     </Text>
                     
-                    <View>
-                        {receita.length > 0 && 
-                            receita.map((Receita, index) => (
-                                <Text style={styles.containerText} key={index}>R$ {Receita.valor.toFixed(2)}</Text>
-                            ))
-                        }
-                    </View>
+                    <Text style={styles.containerText}>
+                        R${receita.toFixed(2)}
+                    </Text>
                 </View>
                 <View >
                     <Text style={styles.containerText}>
                         Despesas
                     </Text>
-                    <View>
-                        {despesa.map((despesa, index) => (
-                        <Text style={styles.containerText} key={index}>R${despesa.valor.toFixed(2)}</Text>
-                        ))}
-                    </View>
+                    <Text style={styles.containerText}>
+                        R${despesa.toFixed(2)}
+                    </Text>
                 </View>
                 
             </View>
@@ -83,5 +70,8 @@ const styles = StyleSheet.create({
     },
     containerText: {
         fontSize: 20,
+        justifyContent: 'center',
+        textAlign: 'center',
+        marginTop: 10
     }
 })
