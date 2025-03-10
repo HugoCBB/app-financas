@@ -1,54 +1,53 @@
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View, ViewComponent } from "react-native";
+import Navegation from "../../components/Navegation";
+import { useReceita } from "../../Api/Transacoes/Receita";
+import { useDespesa } from "../../Api/Transacoes/Despesa";
 
-
-interface saldo{
-    saldo: number;
-}
-
-interface HomeProps {
-    receita: number
-    despesa: number
-    saldo: saldo
-}
-
-export default function Home({receita, despesa,saldo}: HomeProps) {
+export default function Home() {
+    const { valorTotalReceita} = useReceita();
+    const {valorTotalDespesa} = useDespesa();
+    const saldo = {valor: valorTotalReceita - valorTotalDespesa};
 
     
     return (
-        <View style={styles.container}>
-            <View>
-                <Text style={styles.containerText}>
-                    Saldo
-                </Text>
-                <Text style={styles.containerText}>
-                    R${saldo.saldo.toFixed(2)}
-                </Text>
-            </View>
-            
-            
-            
-            <View style={styles.containerLabel}>
-                <View >
+        <View style={{flex: 1, backgroundColor: '#363636'}}>
+
+            <View style={styles.container}>
+                <View>
                     <Text style={styles.containerText}>
-                        Receitas
-                    </Text>
-                    
-                    <Text style={styles.containerText}>
-                        R${receita.toFixed(2)}
-                    </Text>
-                </View>
-                <View >
-                    <Text style={styles.containerText}>
-                        Despesas
+                        Saldo
                     </Text>
                     <Text style={styles.containerText}>
-                        R${despesa.toFixed(2)}
+                        R${saldo.valor.toFixed(2)}
                     </Text>
                 </View>
                 
+                
+                
+                <View style={styles.containerLabel}>
+                    <View >
+                        <Text style={styles.containerText}>
+                            Receitas
+                        </Text>
+                        
+                        <Text style={styles.containerText}>
+                            R${valorTotalReceita.toFixed(2)}
+                        </Text>
+                    </View>
+                    <View >
+                        <Text style={styles.containerText}>
+                            Despesas
+                        </Text>
+                        <Text style={styles.containerText}>
+                            R${valorTotalDespesa.toFixed(2)}
+                        </Text>
+                    </View>
+                    
+                </View>
             </View>
-            
+            <Navegation />
         </View>
+        
     )
 }
 

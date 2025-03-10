@@ -1,14 +1,26 @@
-import { Text, View } from "react-native";
-import Navegation from "./src/components/Navegation";
+import React from "react";
+import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import Transacoes from "./src/pages/Transacoes";
 import Home from "./src/pages/Home";
-import Api from "./src/Api";
-
+import { DespesaProvider } from "./src/Api/Transacoes/Despesa";
+import { ReceitaProvider } from "./src/Api/Transacoes/Receita";
+import { TransacaoProvider } from "./src/Api/Transacoes";
+const Stack = createNativeStackNavigator();
 
 export default function App() {
   return (
-    <View style={{flex: 2, backgroundColor: '#363636'}}>
-      <Api />
-      <Navegation />
-    </View>
+  <TransacaoProvider>
+    <DespesaProvider>
+      <ReceitaProvider>
+        <NavigationContainer>
+          <Stack.Navigator screenOptions={{ headerShown: false }} initialRouteName="Home">
+            <Stack.Screen name="Home" component={Home} />
+            <Stack.Screen name="Transacoes" component={Transacoes} />
+          </Stack.Navigator>
+        </NavigationContainer>  
+      </ReceitaProvider>
+    </DespesaProvider>
+  </TransacaoProvider>
   );
 }

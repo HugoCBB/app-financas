@@ -1,25 +1,32 @@
 import { TouchableOpacity, StyleSheet, Text, View, Image } from "react-native";
+import { useNavigation } from "@react-navigation/native";
+import { StackNavigationProp } from "@react-navigation/stack";
 
+type NavigationProp = StackNavigationProp<RootStackParamList>;
+
+type RootStackParamList = {
+    Home: undefined;
+    Transacoes: undefined;
+  };
 
 export default function Navegation() {
+    const navigation = useNavigation<NavigationProp>();
     return (
         <View style={styles.container}>
-            <TouchableOpacity style={styles.button}>
+            <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Home')}>
                 <Image style={styles.iconbutton} source={require('../../assets//icon/botao-home.png')}/>
                 <Text >Home</Text>
             </TouchableOpacity>
             
-            <TouchableOpacity style={styles.button}>
+            <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Transacoes')}>
                 <Image style={styles.iconbutton} source={require('../../assets//icon/botao-transacao.png')}/>
-                <Text>Transacoes</Text>
+                <Text >Transacoes</Text>
             </TouchableOpacity>
             
             <TouchableOpacity style={styles.button}>
                 <Image style={styles.iconbutton} source={require('../../assets//icon/botao-planejamento.png')}/>
                 <Text>Planejamento</Text>
             </TouchableOpacity>
-        
-        
         </View>
     )
 }
